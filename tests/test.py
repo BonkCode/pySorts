@@ -85,7 +85,18 @@ class TestMode():
 
 class ArgumentError(Exception):
     def __str__(self) -> str:
-        return "Error: Incorrect args"
+        return f"Error: Incorrect args: Expected arg count: 1; Expected argument list: {[i for i in testModes.keys()]}"
+
+
+testModes =\
+    {
+        'all': TestMode.All,
+        'insert': TestMode.Insert,
+        'merge': TestMode.Merge,
+        'quick': TestMode.Quick,
+        'randquick': TestMode.Randquick
+    }
+
 
 def main():
     arrays =\
@@ -99,14 +110,6 @@ def main():
         [],
         [0]
     ]
-    testModes =\
-    {
-        'all': TestMode.All,
-        'insert': TestMode.Insert,
-        'merge': TestMode.Merge,
-        'quick': TestMode.Quick,
-        'randquick': TestMode.Randquick
-    }
 
     testMode = TestMode.All
     if len(sys.argv) > 2:
