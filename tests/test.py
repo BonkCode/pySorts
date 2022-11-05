@@ -21,14 +21,21 @@ class bcolors:
 
 class ITest():
     @classmethod
-    def run_test(self, arrs):
-        pass
+    def run_test(self, testDataArr: list[list], function: callable = None, message:str = f"{bcolors.OKCYAN}Test:{bcolors.ENDC}"):
+        print(message, end=" ")
+        for testData in testDataArr:
+            try:
+                function(testData)
+                print(f"{bcolors.OKGREEN}OK{bcolors.ENDC}", end=" ")
+            except AssertionError:
+                print(f"{bcolors.FAIL}ERR{bcolors.ENDC}", end=" ")
+        print()
 
 
 class TestMode():
     class All(ITest):
         @classmethod
-        def run_test(self, arrs):
+        def run_test(self, arrs, func=None, ):
             TestMode.Insert.run_test(arrs)
             TestMode.Merge.run_test(arrs)
             TestMode.Quick.run_test(arrs)
@@ -37,50 +44,22 @@ class TestMode():
     class Insert(ITest):
         @classmethod
         def run_test(self, arrs):
-            print(f"{bcolors.OKCYAN}Insert Sort:{bcolors.ENDC}", end=" ")
-            for arr in arrs:
-                try:
-                    insertsortTest.testInsertionSort(arr)
-                    print(f"{bcolors.OKGREEN}OK{bcolors.ENDC}", end=" ")
-                except AssertionError:
-                    print(f"{bcolors.FAIL}ERR{bcolors.ENDC}", end=" ")
-            print()
+            super().run_test(arrs, insertsortTest.testInsertionSort, f"{bcolors.OKCYAN}Insert Sort:{bcolors.ENDC}")
 
     class Merge(ITest):
         @classmethod
         def run_test(self, arrs):
-            print(f"{bcolors.OKCYAN}Merge Sort:{bcolors.ENDC}", end=" ")
-            for arr in arrs:
-                try:
-                    mergesortTest.testMergeSort(arr)
-                    print(f"{bcolors.OKGREEN}OK{bcolors.ENDC}", end=" ")
-                except AssertionError:
-                    print(f"{bcolors.FAIL}ERR{bcolors.ENDC}", end=" ")
-            print()
+            super().run_test(arrs, mergesortTest.testMergeSort, f"{bcolors.OKCYAN}Merge Sort:{bcolors.ENDC}")
 
     class Quick(ITest):
         @classmethod
         def run_test(self, arrs):
-            print(f"{bcolors.OKCYAN}Quick Sort:{bcolors.ENDC}", end=" ")
-            for arr in arrs:
-                try:
-                    quicksortTest.testQuickSort(arr)
-                    print(f"{bcolors.OKGREEN}OK{bcolors.ENDC}", end=" ")
-                except AssertionError:
-                    print(f"{bcolors.FAIL}ERR{bcolors.ENDC}", end=" ")
-            print()
+            super().run_test(arrs, quicksortTest.testQuickSort, f"{bcolors.OKCYAN}Quick Sort:{bcolors.ENDC}")
 
     class Randquick(ITest):
         @classmethod
         def run_test(self, arrs):
-            print(f"{bcolors.OKCYAN}Randomized quick Sort:{bcolors.ENDC}", end=" ")
-            for arr in arrs:
-                try:
-                    randquicksortTest.testRandQuickSort(arr)
-                    print(f"{bcolors.OKGREEN}OK{bcolors.ENDC}", end=" ")
-                except AssertionError:
-                    print(f"{bcolors.FAIL}ERR{bcolors.ENDC}", end=" ")
-            print()
+            super().run_test(arrs, randquicksortTest.testRandQuickSort, f"{bcolors.OKCYAN}Randomized quick Sort:{bcolors.ENDC}")
 
 
 class ArgumentError(Exception):
@@ -108,7 +87,13 @@ def main():
         [1, 2, 3, 4, 5],
         [1000000, 10000001, 10],
         [],
-        [0]
+        [0],
+        [-1, -2, -3, 4, 5, 6],
+        ['q', 'w', 'e'],
+        [['e', 'e', 'eee'], ['q', 'q'], ['w']],
+        [[], [], []],
+        [[]],
+        [[[[[]]]], []]
     ]
 
     testMode = TestMode.All
